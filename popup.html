@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./assets/css/main.css">
+</head>
+<body>
+    <div class="container">
+        <header class="flex-container"> 
+            <img class="logo" src="./assets/image/icon-netflix-20x20.png" alt="netflix-icon">
+            <h3 class="title">
+                <span class="inner-title"> </span>
+                <span class="count"></span>
+            </h3>
+            <div class="lang-actions">
+                <button id="btn-lang-eng"
+                    class="btn-lang lang-active"
+                    data-langType="category_data_eng">
+                    <img src="./assets/image/icon-us.png" alt="lan-eng">
+                </button>
+                <button id="btn-lang-por"
+                    class="btn-lang"
+                    data-langType="category_data_por">
+                    <img src="./assets/image/icon-br.png" alt="lan-por">
+                </button>
+                <button id="btn-lang-es"
+                    class="btn-lang"
+                    data-langType="category_data_es">
+                    <img src="./assets/image/icon-es.png" alt="lan-es">
+                </button>
+            </div>
+        </header>
+        <div class="search-contents">
+            <input id="search-category" type="text" placeholder="Search category" />
+        </div>
+        <section>
+            <ul id="main-list">
+            </ul>
+        </section>
+        <footer>
+            &copy; 2019 - Junio Marques - Frontend 
+        </footer>
+    </div>
+    <script src="./assets/js/jquery-3.4.1-slim.min.js"></script>
+    <script src="./assets/js/popup.js"></script>
+</body>
+</html>
