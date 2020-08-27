@@ -4,6 +4,8 @@
 Instale mi extensión en la tienda de chrome web store:<br>
 <https://chrome.google.com/webstore/detail/netflix-hidden-categories/cgbijfcjpahaacfiipaikmdijhagkfif?hl=es>
 
+![](netflix-hidden-categories.gif)
+
 Es increible:exclamation::exclamation::exclamation: que con apenas (html, css y js) puedas desarrollar una completa extensión y subirla a la tienda de google.
 
 Con esta extensión podrás acceder a varias categorias que estan ocultas por defecto en netflix :tv:
