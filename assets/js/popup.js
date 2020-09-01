@@ -122,7 +122,6 @@ function translaterLang(lang) {
 }
 
 $('#main-list').on('click', '.go-category', function(){
-
   let _this = $(this),
       _thisUrl = _this.data('url'),
       urlSplit = _thisUrl.split('/'),
