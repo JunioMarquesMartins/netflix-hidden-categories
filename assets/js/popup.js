@@ -4,9 +4,11 @@
 **/
 let categoryListCopy;
 let dataCategory;
+let title = document.getElementsByClassName('inner-title')[0];
+const urlBase = 'https://www.netflix.com/browse/genre/';
 // DOM Elements
-const inputSearch = $('#search-category'),
-      btnLang = $('.btn-lang'),
+const inputSearch = document.getElementById('search-category'),
+      btnLang = document.querySelectorAll('.btn-lang'),
       mainList = document.getElementById('main-list');
 
 function openinCurrentTab(href){
@@ -35,7 +37,7 @@ fetch('./category.json')
   });
 
 // Events DOM
-inputSearch.on('keyup', function(evt) {
+inputSearch.addEventListener('keyup', evt => {
 
   const newCategoryList = [...categoryListCopy];
   const query = evt.target.value.replace(/\w\S*/g, function(query){
@@ -59,37 +61,49 @@ inputSearch.on('keyup', function(evt) {
   innerNumberTotalCategories(count);
 });
 
-btnLang.on('click', function(e){
+btnLang.forEach(item => {
 
-  const dataLang = $(this).attr("data-langType"),
-        lang = $(this)[0].id;
+  item.addEventListener('click', e => {
 
-  btnLang.removeClass('lang-active');
-  $(this).addClass('lang-active');
-  translaterLang(dataLang);
-  translaterText(lang);
+    let elPath = e.path[1],
+        dataLang = elPath.attributes[2].nodeValue;
+        lang = elPath.id;
+        
+    deleteClassesBtn();
+    item.classList.add('lang-active');
+    translaterLang(dataLang);
+    translaterText(lang);
 
-  selectedSearch();
-  inputSearch.val('');
+    selectedSearch();
+    inputSearch.value = '';
+
+  });
+
+  
 });
 
+function deleteClassesBtn() {
+  document.querySelectorAll('.btn-lang').forEach(item => {
+    item.classList.remove('lang-active');
+  });
+}
+
 function innerNumberTotalCategories(totalCategories) {
-  $('.count').text(totalCategories);
+  document.getElementsByClassName('count')[0].innerHTML = totalCategories;
 }
 
 function translaterText(lang) {
-  let title = $('.inner-title'),
   textTranslater = {
     en: 'Categories',
     por: 'Categorias',
     es: 'Categorías'
   };
   if(lang.indexOf('btn-lang-eng') > -1){
-    title.text(textTranslater.en)
+    title.innerHTML = textTranslater.en;
   } else if(lang.indexOf('btn-lang-por') > -1) {
-    title.text(textTranslater.por)
+    title.innerHTML = textTranslater.por;
   } else {
-    title.text(textTranslater.es)
+    title.innerHTML = textTranslater.es;
   }
 }
 
@@ -123,19 +137,19 @@ function translaterLang(lang) {
 
 $('#main-list').on('click', '.go-category', function(){
   let _this = $(this),
-      _thisUrl = _this.data('url'),
-      urlSplit = _thisUrl.split('/'),
-      urlId = urlSplit.pop();
+      urlId = _this.data('url').split('/').pop();
 
   $('.go-category').removeClass('active');
   _this.addClass('active');
 
-  const url = `https://www.netflix.com/browse/genre/${urlId}`;
+  const url = urlBase+urlId;
   openinCurrentTab(url);
 
 });
 
-inputSearch.on('click', function(e){
+
+
+inputSearch.addEventListener('click', e => {
   e.target.value = '';
 });
 
