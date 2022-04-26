@@ -1,15 +1,18 @@
 /** 
 * Junio Marques - Frontend Developer
-* personal web: http://juniomarques.com
+* WEB: http://juniomarques.com
 **/
+
 let categoryListCopy;
 let dataCategory;
-let title = document.getElementsByClassName('inner-title')[0];
-const urlBase = 'https://www.netflix.com/browse/genre/';
-// DOM Elements
-const inputSearch = document.getElementById('search-category'),
-      btnLang = document.querySelectorAll('.btn-lang'),
-      mainList = document.getElementById('main-list');
+
+let setGlobalElements = {
+  title: document.getElementsByClassName('inner-title')[0],
+  inputSearch: document.getElementById('search-category'),
+  btnLang: document.querySelectorAll('.btn-lang'),
+  mainList: document.getElementById('main-list'),
+  urlBase: 'https://www.netflix.com/browse/genre/'
+}
 
 function openinCurrentTab(href){
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {chrome.tabs.update(tabs[0].id, {url: href});
@@ -26,18 +29,19 @@ fetch('./category.json')
     categoryListCopy = category_data_eng;
     selectedSearch();
     translaterText('btn-lang-eng');
-    let categoryList = category_data_eng.map((category)=>{  return `<li class="go-category" data-url=${category.url}>
+    let categoryList = category_data_eng.map((category)=>{
+      return `<li class="go-category" data-url=${setGlobalElements.urlBase.concat(category.id)}>
                     <a title=${category.name}>
                       ${category.name}
                     </a>
                 </li>`;
     }).join('')
     innerNumberTotalCategories(categoryListCopy.length);
-    mainList.innerHTML = categoryList;
+    setGlobalElements.mainList.innerHTML = categoryList;
   });
 
-// Events DOM
-inputSearch.addEventListener('keyup', evt => {
+
+  setGlobalElements.inputSearch.addEventListener('keyup', evt => {
 
   const newCategoryList = [...categoryListCopy];
   const query = evt.target.value.replace(/\w\S*/g, function(query){
@@ -52,16 +56,18 @@ inputSearch.addEventListener('keyup', evt => {
 
     if(categoryName.indexOf(query)>-1) {
       count ++;
-      return `<li class="go-category" data-url=${category.url}><a title=${category.name}>${category.name}</a></li>`;
+      return `<li class="go-category" data-url=${setGlobalElements.urlBase.concat(category.id)}>
+                <a title=${category.name}>${category.name}</a>
+              </li>`;
     }
     
   }).join('');
 
-  mainList.innerHTML = categoryFilter;
+  setGlobalElements.mainList.innerHTML = categoryFilter;
   innerNumberTotalCategories(count);
 });
 
-btnLang.forEach(item => {
+setGlobalElements.btnLang.forEach(item => {
 
   item.addEventListener('click', e => {
 
@@ -75,7 +81,7 @@ btnLang.forEach(item => {
     translaterText(lang);
 
     selectedSearch();
-    inputSearch.value = '';
+    setGlobalElements.inputSearch.value = '';
 
   });
 
@@ -98,26 +104,24 @@ function translaterText(lang) {
     por: 'Categorias',
     es: 'Categorías'
   };
-  if(lang.indexOf('btn-lang-eng') > -1){
-    title.innerHTML = textTranslater.en;
-  } else if(lang.indexOf('btn-lang-por') > -1) {
-    title.innerHTML = textTranslater.por;
-  } else {
-    title.innerHTML = textTranslater.es;
-  }
+  if(lang.includes('btn-lang-eng')) { setGlobalElements.title.innerHTML = textTranslater.en; } 
+  if(lang.includes('btn-lang-por')) { setGlobalElements.title.innerHTML = textTranslater.por; } 
+  if(lang.includes('btn-lang-es')) { setGlobalElements.title.innerHTML = textTranslater.es; }
 }
 
 function translaterLang(lang) {
 
   let langList;
 
-  if(lang.indexOf('category_data_eng')>-1) {
+  if(lang.includes('category_data_eng')) {
     langList = dataCategory.category_data_eng;
     innerNumberTotalCategories(dataCategory.category_data_eng.length);
-  } else if(lang.indexOf('category_data_por')>-1) {
+  } 
+  if(lang.includes('category_data_por')) {
     langList = dataCategory.category_data_por;
     innerNumberTotalCategories(dataCategory.category_data_por.length);
-  } else {
+  }
+  if(lang.includes('category_data_es')){
     langList = dataCategory.category_data_es;
     innerNumberTotalCategories(dataCategory.category_data_es.length);
   }
@@ -125,31 +129,45 @@ function translaterLang(lang) {
   categoryListCopy = langList; 
 
   let categoryList = langList.map((category)=>{
-      return `<li class="go-category" data-url=${category.url}>
+      return `<li class="go-category" data-url=${setGlobalElements.urlBase.concat(category.id)}>
                   <a title=${category.name}>
                     ${category.name}
                   </a>
               </li>`;
   }).join('')
 
-  mainList.innerHTML = categoryList;
+  setGlobalElements.mainList.innerHTML = categoryList;
 }
 
-$('#main-list').on('click', '.go-category', function(){
-  let _this = $(this),
-      urlId = _this.data('url').split('/').pop();
+document.addEventListener("DOMContentLoaded", function() {
+  
+  setTimeout(() => {
+    const categoriesList = document.querySelectorAll('.go-category');
+   
+    categoriesList.forEach(item => {
+      item.addEventListener('click', e => {
 
-  $('.go-category').removeClass('active');
-  _this.addClass('active');
+        const urlId = item.getAttribute('data-url').split('/').pop();
+        deleteClassesActive();
+        item.className = 'go-category active';
 
-  const url = urlBase+urlId;
-  openinCurrentTab(url);
+        const url = setGlobalElements.urlBase.concat(urlId);
+        openinCurrentTab(url);
+
+      });
+    });
+
+  }, 1000);
 
 });
 
+function deleteClassesActive() {
+  document.querySelectorAll('.go-category').forEach(item => {
+    item.classList.remove('active');
+  });
+}
 
-
-inputSearch.addEventListener('click', e => {
+setGlobalElements.inputSearch.addEventListener('click', e => {
   e.target.value = '';
 });
 
