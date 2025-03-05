@@ -1,15 +1,15 @@
 {
     "name": "Netflix Hidden Categories",
-    "version": "1.2",
-    "description": "Search categories hidden of Netflix",
+    "version": "1.3",
+    "description": "Search hidden categories on Netflix",
     "author": "Junio Marques",
-    "page_action": {
+    "action": {
         "default_popup": "popup.html",
         "default_icon": {
-            "16": "assets/image/icon-netflix16x16.png",
-            "32": "assets/image/icon-netflix32x32.png",
-            "48": "assets/image/icon-netflix48x48.png",
-            "128": "assets/image/icon-netflix128x128.png"
+        "16": "assets/image/icon-netflix16x16.png",
+        "32": "assets/image/icon-netflix32x32.png",
+        "48": "assets/image/icon-netflix48x48.png",
+        "128": "assets/image/icon-netflix128x128.png"
         }
     },
     "icons": {
@@ -19,12 +19,11 @@
         "128": "assets/image/icon-netflix128x128.png"
     },
     "permissions": [
-        "activeTab",
-        "declarativeContent"
+        "activeTab"
     ],
     "background": {
-        "scripts": ["background.js"],
-        "persistent": false
+        "service_worker": "background.js"
     },
-    "manifest_version": 2
+    "manifest_version": 3
 }
+  

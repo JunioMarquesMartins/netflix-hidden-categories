@@ -16,5 +16,4 @@ Con esta extensión podrás acceder a varias categorias que estan ocultas por de
 Para poder subir cualquier extensión en las tiendas de google es necesario cumplir ciertos requisitos previos, por eso comparto el link de google develop extension por si quereis jugar un poco con las extensiones os animo a probar !!!
 
 ### Develops Extensions - Docs
-<https://developer.chrome.com/extensions/devguide>
-
+<https://developer.chrome.com/docs/extensions/reference/api>
