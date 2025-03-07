@@ -71,9 +71,15 @@ setGlobalElements.btnLang.forEach(item => {
 
   item.addEventListener('click', e => {
 
-    let elPath = e.path[1],
-        dataLang = elPath.attributes[2].nodeValue;
+    let pathArray = e.composedPath();
+    let dataLang, lang;
+    if (pathArray.length > 1) {
+        let elPath = pathArray[1]; 
         lang = elPath.id;
+        dataLang = elPath.getAttribute("data-lang"); 
+    } else {
+        console.warn("path not found");
+    }
         
     deleteClassesBtn();
     item.classList.add('lang-active');
@@ -134,27 +140,33 @@ function translaterLang(lang) {
                     ${category.name}
                   </a>
               </li>`;
+
   }).join('')
 
   setGlobalElements.mainList.innerHTML = categoryList;
 }
 
+function openCategory(url) {
+  console.log(url)
+}
+
+
+
 document.addEventListener("DOMContentLoaded", function() {
   
   setTimeout(() => {
-    const categoriesList = document.querySelectorAll('.go-category');
-   
-    categoriesList.forEach(item => {
-      item.addEventListener('click', e => {
 
-        const urlId = item.getAttribute('data-url').split('/').pop();
+
+    document.getElementById('main-list').addEventListener('click', function(event) {
+      const item = event.target.closest('.go-category');
+      if (!item) return; 
+
+      const urlId = item.getAttribute('data-url').split('/').pop();
         deleteClassesActive();
         item.className = 'go-category active';
 
         const url = setGlobalElements.urlBase.concat(urlId);
         openinCurrentTab(url);
-
-      });
     });
 
   }, 1000);
